@@ -1,0 +1,22 @@
+{
+  "name": "occupancytracker",
+  "version": "1.0.0",
+  "description": "Aircrack-ng wrapper to track unique mac addresses with a wifi adapter in monitor mode.",
+  "main": "src/app.ts",
+  "scripts": {
+    "test": "jest",
+    "build": "tsc -b"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@types/jest": "^29.5.11",
+    "@types/node": "^20.11.5",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.2",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "node-pty": "^1.0.0"
+  }
+}
