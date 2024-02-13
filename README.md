@@ -1,5 +1,5 @@
 # Occupancy Tracker
-Project to estimate the number of people in a room by reading mac addresses transmitted with a wifi adapter in monitor mode.
+Project to estimate the number of people in a room by detecting wifi communication from devices people carry on them (cellphone/laptop). Using a WiFi adapter in monitor mode the MAC address and signal strgenth of active WiFi devices in range are obtained. Then analysis is done to remove long term non-people devices like printers and lab-computers, then number of people in range is estimated using heuristics to account for multiple devices on one person. 
 
 ## Device Requirements
 Using a RasberryPi (or similar) 
@@ -12,10 +12,18 @@ The RaspberryPi can monitor 2.4Ghz WiFi but it does not support 5Ghz, also to be
 [Adapter that works with airodump](https://www.amazon.com/gp/product/B00VEEBOPG) and [drivers](https://forums.kali.org/showthread.php?50408-Kali-2020-2-ALFA-AWUS036ACH).
 
 ## Building / Running
-Checkout this repository with Git
+* Requirements:
+    * [Git installed](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+    * [Node JS & NPM Instaled](https://nodejs.org/en/download/)
+
+Checkout this repository with Git:
+
+`git clone https://github.com/Hawks-Code/Occupancy-Tracker.git`
+
+Open the repository you just cloned: `cd Occupancy-Tracker`
 
 Install dependencies: `npm install`
 
-Build code: `npm build`
+Build code: `npm run build`
 
 Run code: `sudo node ./build/src/app.js`
