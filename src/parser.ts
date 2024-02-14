@@ -7,25 +7,34 @@ export type AirodumpFrame = {
     aps: AccessPoint[]
 }
 
-// BSSID              STATION            PWR   Rate   Lost  Frames  Notes  Probes
+/* 
+In airodump-ng terms, Station is a client device, STATION is the MAC address of the client, BSSID is the access point's MAC.
+https://www.aircrack-ng.org/doku.php?id=airodump-ng
+
+BSSID              STATION            PWR   Rate   Lost  Frames  Notes  Probes
+00:14:6C:7E:40:80  00:0F:B5:FD:FB:C2  35    54-54  0     99             example-ssid
+*/
 export type Station = {
     BSSID: string
     STATION: string
-    PWR: string
+    PWR: number
     Rate: string
-    Lost: string
-    Frames: string
+    Lost: number
+    Frames: number
     Notes: string
     Probes: string
 }
 
-// BSSID              PWR  Beacons    #Data, #/s  CH  MB   ENC  CIPHER AUTH ESSID
+/*
+BSSID              PWR  Beacons    #Data, #/s  CH  MB   ENC  CIPHER AUTH ESSID
+00:09:5B:1C:AA:1D  11   10         0      0    11  54.  OPN              NETGEAR
+*/
 export type AccessPoint = {
     BSSID: string
-    PWD: string
+    PWR: number
     Beacons: string
-    '#Data': string
-    '#/s': string
+    'Num_Data': string
+    'Num_sec': string
     CH: string
     MB: string
     ENC: string
@@ -37,12 +46,15 @@ export type AccessPoint = {
 const OUTPUT_START = "\x1B[2;1H\x1B[22m\x1B[37m"
 const ANSI_REGEX = new RegExp('[\\u001B\\u009B][[\\]()#;?]*(?:(?:(?:(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]+)*|[a-zA-Z\\d]+(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]*)*)?\\u0007)|(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PR-TZcf-ntqry=><~]))', 'g');
 
-export class Parser {
+export class AirodumpParser {
     private outputBuffer = ""
     private emitter = new EventEmitter()
 
     // node-pty spits out data in chunks, sometimes breaking up lines, need to buffer until a complete output is recieved
     processData(data: string) {
+        //TODO: this assumes all data is expected output, and will hang on error messages that will never have valid airomon-ng output.
+        // console.log('processing data: ' + data)
+
         this.outputBuffer = this.outputBuffer.concat(data)
 
         if (this.shouldParseOutputBuffer()) {
@@ -137,8 +149,39 @@ export class Parser {
                 item[headChunks[j]] = lines[i].substr(start, len).trim();
             }
 
-            //@ts-ignore - accessing result by string key + adding any obj to typed arrays
-            result[headPrefix].push(item);
+            try {
+                if (headPrefix == 'stations') {
+                    result.stations.push({
+                        BSSID: item.BSSID,
+                        STATION: item.STATION,
+                        PWR: Number.parseInt(item.PWR),
+                        Rate: item.Rate,
+                        Lost: Number.parseInt(item.Lost),
+                        Frames: Number.parseInt(item.Frames),
+                        Notes: item.Notes,
+                        Probes: item.Probes
+                    })
+                } else if (headPrefix == 'aps') {
+                    result.aps.push({
+                        BSSID: item.BSSID,
+                        PWR: Number.parseInt(item.PWR),
+                        Beacons: item.Beacons,
+                        Num_Data: item['#Data'],
+                        Num_sec: item['#/s'],
+                        CH: item.CH,
+                        MB: item.MB,
+                        ENC: item.ENC,
+                        CIPHER: item.CIPHER,
+                        AUTH: item.AUTH,
+                        ESSID: item.ESSID
+                    })
+                } else {
+                    throw Error('Parsing Error: Unknown headPrefix')
+                }
+            } catch (e) {
+                console.log(e)
+                throw Error('Parsing Error: ' + JSON.stringify(e))
+            }
         }
 
         return result;

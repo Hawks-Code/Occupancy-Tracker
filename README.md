@@ -11,7 +11,7 @@ The RaspberryPi can monitor 2.4Ghz WiFi but it does not support 5Ghz, also to be
 
 [Adapter that works with airodump](https://www.amazon.com/gp/product/B00VEEBOPG) and [drivers](https://forums.kali.org/showthread.php?50408-Kali-2020-2-ALFA-AWUS036ACH).
 
-## Building / Running
+## Building / Running Code
 * Requirements:
     * [Git installed](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
     * [Node JS & NPM Instaled](https://nodejs.org/en/download/)
@@ -27,3 +27,15 @@ Install dependencies: `npm install`
 Build code: `npm run build`
 
 Run code: `sudo node ./build/src/app.js`
+
+## Notes 
+### VS Code SFTP to RaspberryPi 
+For easy code deployment / development use VS Code + https://marketplace.visualstudio.com/items?itemName=Natizyskunk.sftp
+
+> NOTE: Sync only the current dir or file, syncing all files will sync node_modules and take forever and probablly break things!!!
+
+### Airodump-ng
+This is the program used to control and read from the WiFi adapter in monitor mode. 
+
+Docs: https://www.aircrack-ng.org/doku.php?id=airodump-ng explain what data is captured and output.
+

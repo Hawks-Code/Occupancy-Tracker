@@ -1,4 +1,4 @@
-import { Parser } from "../src/parser"
+import { AirodumpParser } from "../src/parser"
 
 const SAMPLE_OUTPUT = `
 CH  9 ][ Elapsed: 1 min ][ 2007-04-26 17:41 ][ WPA handshake: 00:14:6C:7E:40:80
@@ -19,7 +19,7 @@ BSSID              STATION            PWR   Rate   Lost  Frames  Notes  Probes
 
 describe('parser.ts', () => {
     test('parses sample output', () => {
-        const parser = new Parser()
+        const parser = new AirodumpParser()
         const output = parser.parseAirodumpFrame(SAMPLE_OUTPUT)
         expect(output.handshake).toBe('00:14:6C:7E:40:80')
         expect(output.aps.length).toBe(3)

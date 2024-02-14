@@ -1,6 +1,11 @@
 # build dir
 build/
 
+# 
+.vscode/sftp.json
+
+# ####### GENERATED CODE BELOW ############
+
 # Logs
 logs
 *.log
