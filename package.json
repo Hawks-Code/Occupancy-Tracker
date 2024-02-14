@@ -5,7 +5,8 @@
   "main": "src/app.ts",
   "scripts": {
     "test": "jest",
-    "build": "jest && tsc -b"
+    "build": "jest && tsc -b",
+    "app": "node ./build/src/app.js"
   },
   "author": "",
   "license": "UNLICENSED",

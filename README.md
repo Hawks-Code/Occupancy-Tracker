@@ -26,7 +26,7 @@ Install dependencies: `npm install`
 
 Build code: `npm run build`
 
-Run code: `sudo node ./build/src/app.js`
+Run code: `sudo npm run app`
 
 ## Notes 
 ### VS Code SFTP to RaspberryPi 
