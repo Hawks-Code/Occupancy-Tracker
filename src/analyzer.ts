@@ -36,6 +36,16 @@ export class Analyzer {
     forgetOldMacs() {
 
     }
+
+    printData() {
+        [...this.storedAddresses.values()].sort((a: TrackedMac, b: TrackedMac) => {
+            return a.lastStation.PWR > b.lastStation.PWR ? -1 : 1 // sort by signal strength
+        })
+        .forEach(item => {
+            const sta = item.lastStation
+            console.log(`${sta.STATION} - PWR: ${sta.PWR} Last Seen: ${item.lastSeen.toUTCString()}`)
+        })
+    }
 }
 
 class TrackedMac {
