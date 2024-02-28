@@ -33,6 +33,7 @@ export class Analyzer {
     }
 
     // TODO: Implment me! I should go through the map of storedAddesses and delete the ones which are old and should no longer be considered present
+    // https://github.com/Hawks-Code/Occupancy-Tracker/issues/1
     forgetOldMacs() {
 
     }
@@ -74,17 +75,17 @@ type TrackedMacHistory = {
     power: Number
 }
 
-//TODO: Implement ME!!!
+//TODO: Implement ME!!! https://github.com/Hawks-Code/Occupancy-Tracker/issues/2
 function filterNonHumanDevices(data: TrackedMac[]): TrackedMac[] {
     return data;
 }
 
-//TODO: Implement ME!!!
+//TODO: Implement ME!!! https://github.com/Hawks-Code/Occupancy-Tracker/issues/3
 function filterBySignalStrength(data: TrackedMac[]): TrackedMac[] {
     return data
 }
 
-//TODO: Implement ME!!!
+//TODO: Implement ME!!! https://github.com/Hawks-Code/Occupancy-Tracker/issues/4
 function estimatePopulationFromData(data: TrackedMac[]): number {
     return data.length
 }
