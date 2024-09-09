@@ -11,6 +11,8 @@ The RaspberryPi can monitor 2.4Ghz WiFi but it does not support 5Ghz, also to be
 
 [Adapter that works with airodump](https://www.amazon.com/gp/product/B00VEEBOPG) and [drivers](https://forums.kali.org/showthread.php?50408-Kali-2020-2-ALFA-AWUS036ACH).
 
+`sudo apt install realtek-rtl88xxau-dkms`
+
 ## Building / Running Code
 * Requirements:
     * [Git installed](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)

@@ -24,11 +24,15 @@ export class Analyzer {
         this.forgetOldMacs()
     }
 
-    getCurrentPopulationEstimate(): number {
+    sanatizeData() {
         let data = [...this.storedAddresses.values()]
         data = filterNonHumanDevices(data)
         data = filterBySignalStrength(data)
+        return data
+    }
 
+    getCurrentPopulationEstimate(): number {
+        const data = this.sanatizeData()
         return estimatePopulationFromData(data)
     }
 
@@ -39,7 +43,9 @@ export class Analyzer {
     }
 
     printData() {
-        [...this.storedAddresses.values()].sort((a: TrackedMac, b: TrackedMac) => {
+        this.sanatizeData().filter(
+            mac => mac.lastSeen > new Date(Date.now() - 5 * 60 * 1000) // filter older than 5 minutes
+        ).sort((a: TrackedMac, b: TrackedMac) => {
             return a.lastStation.PWR > b.lastStation.PWR ? -1 : 1 // sort by signal strength
         })
         .forEach(item => {
@@ -50,7 +56,7 @@ export class Analyzer {
 }
 
 class TrackedMac {
-    readonly lastStation: Station
+    public lastStation: Station
     readonly historicalData: TrackedMacHistory[] = []
 
     get lastSeen(): Date {
@@ -63,6 +69,7 @@ class TrackedMac {
     }
 
     addHistoricalData(station: Station) {
+        this.lastStation = station
         this.historicalData.unshift({
             seen: new Date(),
             power: station.PWR
@@ -72,7 +79,7 @@ class TrackedMac {
 
 type TrackedMacHistory = {
     seen: Date
-    power: Number
+    power: number
 }
 
 //TODO: Implement ME!!! https://github.com/Hawks-Code/Occupancy-Tracker/issues/2
@@ -82,7 +89,11 @@ function filterNonHumanDevices(data: TrackedMac[]): TrackedMac[] {
 
 //TODO: Implement ME!!! https://github.com/Hawks-Code/Occupancy-Tracker/issues/3
 function filterBySignalStrength(data: TrackedMac[]): TrackedMac[] {
-    return data
+    return data.filter(mac => {
+        return mac.historicalData.find(item => { 
+            return item.power != -1 && item.power > -51
+        }) != undefined
+    })
 }
 
 //TODO: Implement ME!!! https://github.com/Hawks-Code/Occupancy-Tracker/issues/4

@@ -10,5 +10,9 @@
     "uploadOnSave": false,
     "useTempFile": false,
     "openSsh": false,
-    "interactiveAuth": true
+    "interactiveAuth": true,
+    "ignore": [
+        "/node_modules/**",
+        "/.git/**"
+    ]
 }
